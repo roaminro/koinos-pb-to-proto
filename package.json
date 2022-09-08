@@ -1,5 +1,5 @@
 {
-  "name": "@roaminroe/koinos-pb-to-proto",
+  "name": "@roamin/koinos-pb-to-proto",
   "version": "0.0.1",
   "main": "lib/index.js",
   "repository": "https://github.com/roaminro/koinos-pb-to-proto.git",
