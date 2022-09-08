@@ -15,7 +15,7 @@ yarn add @roaminroe/koinos-pb-to-proto
 
 ### Browser
 ```html
-<script src="https://cdn.jsdelivr.net/gh/roaminro/koinos-pb-to-proto/dist/koinos-pb-to-proto.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/roaminro/koinos-pb-to-proto@latest/dist/koinos-pb-to-proto.min.js"></script>
 ```
 
 ## Examples
