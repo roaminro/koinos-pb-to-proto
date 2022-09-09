@@ -9,9 +9,10 @@
     "noImplicitAny": true,
     "allowJs": true,
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "outDir": "lib"
   },
-  "exclude": ["lib", "dist", "rollup.config.js", "test"]
+  "exclude": ["lib", "dist", "rollup.config.js", "tests", "jest.config.js"]
 }

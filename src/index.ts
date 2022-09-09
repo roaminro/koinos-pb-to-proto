@@ -9,9 +9,9 @@ import {
   getEnum,
   getExtension,
   getMessage
-} from './util.js';
+} from './util';
 
-interface ProtoDescriptor {
+export interface ProtoDescriptor {
   file: string;
   definition: string;
 }

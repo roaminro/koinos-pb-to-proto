@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package tests;
+
+import "koinos/options.proto";
+
+
+message transfer_arguments {
+
+    message nested_message {
+        bytes from = 1 [(koinos.btype) = ADDRESS];
+        bytes to = 2 [(koinos.btype) = ADDRESS];
+        uint64 value = 3 [jstype = JS_STRING];
+    }
+
+    bytes from = 1 [(koinos.btype) = ADDRESS];
+    bytes to = 2 [(koinos.btype) = ADDRESS];
+    uint64 value = 3 [jstype = JS_STRING];
+ }
+ 
+ message transfer_result {
+    bool value = 1;
+ }
+
+ message oneof_message {
+    oneof response {
+       transfer_result tranfer_res = 1;
+       transfer_arguments transfer_arg = 2;
+    }
+ }

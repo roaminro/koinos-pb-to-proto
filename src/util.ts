@@ -28,18 +28,18 @@ export function getEnum(enumDesc: EnumDescriptorProto) {
   }
 
   return `
-  enum ${enumDesc.getName()} {
-    ${values.join('\n  ')} 
-  }\n\n`;
+enum ${enumDesc.getName()} {
+  ${values.join('\n  ')} 
+}\n\n`;
 }
 
 export function getExtension(extDesc: FieldDescriptorProto) {
   const optional = extDesc.hasProto3Optional() ? 'optional' : '';
 
   return `
-  extend ${extDesc.getExtendee()} {
-    ${optional} ${extDesc.getTypeName()} ${extDesc.getName()} = ${extDesc.getNumber()};
-  }\n\n`;
+extend ${extDesc.getExtendee()} {
+  ${optional} ${extDesc.getTypeName()} ${extDesc.getName()} = ${extDesc.getNumber()};
+}\n\n`;
 }
 
 export function getJSType(options: FieldOptions | undefined): string {
