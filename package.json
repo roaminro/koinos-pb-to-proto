@@ -1,6 +1,6 @@
 {
   "name": "@roamin/koinos-pb-to-proto",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "repository": "https://github.com/roaminro/koinos-pb-to-proto.git",
   "author": "Roamin",
