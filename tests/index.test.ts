@@ -81,6 +81,13 @@ import "koinos/options.proto";
 
   }
 
+
+  message repeated_message {
+    
+     repeated string value = 1 ;
+   repeated .tests.transfer_result result = 2 ;
+  }
+
 `);
   });
 });
