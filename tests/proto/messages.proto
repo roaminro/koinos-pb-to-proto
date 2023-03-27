@@ -23,13 +23,35 @@ message transfer_result {
 }
 
 message oneof_message {
+   optional uint32 test1 = 1;
+
    oneof response {
-      transfer_result tranfer_res = 1;
-      transfer_arguments transfer_arg = 2;
+      transfer_result tranfer_res = 2;
+      transfer_arguments transfer_arg = 3;
    }
+
+   optional uint32 test2 = 4;
 }
 
 message repeated_message {
    repeated string value = 1;
    repeated transfer_result result = 2;
+}
+
+enum authorization_type {
+   contract_call = 0;
+   transaction_application = 1;
+   contract_upload = 2;
+}
+
+message call_data {
+   bytes contract_id = 1 [(koinos.btype) = ADDRESS];
+   uint32 entry_point = 2;
+   bytes caller = 3;
+   bytes data = 4;
+}
+
+message authorize_arguments {
+   authorization_type type = 1;
+   optional call_data call = 2;
 }

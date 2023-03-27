@@ -166,26 +166,27 @@ export function getField(fieldDesc: FieldDescriptorProto) {
   return `${optional} ${getFieldLabel(fieldDesc)} ${getFieldType(fieldDesc)} ${fieldName} = ${fieldId} ${extension};`;
 }
 
-export function getOneof(messageDesc: DescriptorProto, fields: string[]): string {
-  let oneof = '';
-  for (const oneofDesc of messageDesc.getOneofDeclList()) {
-    oneof = oneofDesc.getName() as string;
+export function getOneofs(messageDesc: DescriptorProto, oneOfFields: string[][]): string[] {
+  const result: string[] = [];
+
+  for (const [index, oneofDesc] of messageDesc.getOneofDeclList().entries()) {
+    const oneofName = oneofDesc.getName() as string;
+
+    if (oneOfFields[index]) {
+      result.push(`
+    oneof ${oneofName} {
+      ${oneOfFields[index].join('\n    ')}
+    }\n\n`);
+    }
   }
 
-  // if no oneof
-  if (oneof === '') {
-    return fields.join('\n  ');
-  }
-
-  return `
-    oneof ${oneof} {
-      ${fields.join('\n    ')} 
-    }\n\n`;
+  return result;
 }
 
 export function getMessage(messageDesc: DescriptorProto) {
   const nestedMessages: string[] = [];
   const fields: string[] = [];
+  const oneOfFields: string[][] = [];
 
   // nested messages
   for (const nestedMessage of messageDesc.getNestedTypeList()) {
@@ -194,15 +195,31 @@ export function getMessage(messageDesc: DescriptorProto) {
 
   // fields
   for (const fieldDesc of messageDesc.getFieldList()) {
-    fields.push(getField(fieldDesc));
+    const field = getField(fieldDesc);
+    if (fieldDesc.hasOneofIndex() && !fieldDesc.hasProto3Optional()) {
+      const oneOfIndex = fieldDesc.getOneofIndex();
+      if (oneOfIndex === undefined) {
+        throw new Error('Missing one_of index.');
+      }
+
+      let existingFields = oneOfFields[oneOfIndex];
+      if (existingFields === undefined) {
+        existingFields = [];
+        oneOfFields[oneOfIndex] = existingFields;
+      }
+      existingFields.push(field);
+    } else {
+      fields.push(field);
+    }
   }
 
-  // oneof
-  const oneof = getOneof(messageDesc, fields);
+  // one_of fields
+  const oneOfs = getOneofs(messageDesc, oneOfFields);
 
   return `
   message ${messageDesc.getName()} {
     ${nestedMessages.join('\n  ')}
-    ${oneof}
+    ${fields.join('\n  ')}
+    ${oneOfs.join('\n  ')}
   }\n\n`;
 }

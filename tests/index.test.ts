@@ -41,11 +41,18 @@ extend .google.protobuf.FieldOptions {
   test('messages', () => {
     const pd = conversionResult.find(v => v.file === 'messages.proto');
 
-    expect(pd?.definition).toStrictEqual(`syntax = 'proto3';
+    expect(pd?.definition).toEqual(`syntax = 'proto3';
 
 package tests;
 
 import "koinos/options.proto";
+
+
+enum authorization_type {
+  contract_call = 0;
+  transaction_application = 1;
+  contract_upload = 2; 
+}
 
 
   message transfer_arguments {
@@ -55,27 +62,32 @@ import "koinos/options.proto";
       bytes from = 1 [(koinos.btype) = ADDRESS];
     bytes to = 2 [(koinos.btype) = ADDRESS];
     uint64 value = 3 [jstype = JS_STRING];
+    
   }
 
 
       bytes from = 1 [(koinos.btype) = ADDRESS];
     bytes to = 2 [(koinos.btype) = ADDRESS];
     uint64 value = 3 [jstype = JS_STRING];
+    
   }
 
 
   message transfer_result {
     
       bool value = 1 ;
+    
   }
 
 
   message oneof_message {
     
+    optional  uint32 test1 = 1 ;
+  optional  uint32 test2 = 4 ;
     
     oneof response {
-        .tests.transfer_result tranfer_res = 1 ;
-      .tests.transfer_arguments transfer_arg = 2 ; 
+        .tests.transfer_result tranfer_res = 2 ;
+      .tests.transfer_arguments transfer_arg = 3 ;
     }
 
 
@@ -86,6 +98,25 @@ import "koinos/options.proto";
     
      repeated string value = 1 ;
    repeated .tests.transfer_result result = 2 ;
+    
+  }
+
+
+  message call_data {
+    
+      bytes contract_id = 1 [(koinos.btype) = ADDRESS];
+    uint32 entry_point = 2 ;
+    bytes caller = 3 ;
+    bytes data = 4 ;
+    
+  }
+
+
+  message authorize_arguments {
+    
+      .tests.authorization_type type = 1 ;
+  optional  .tests.call_data call = 2 ;
+    
   }
 
 `);
